@@ -22,7 +22,7 @@ app.get('/meta', function(req, res) {
 })
 
 getPort({
-    port: 8080
+    port: process.env.PORT || 8080
 }).then(port => {
     var server = app.listen(port, function() {
         var host = server.address().address
