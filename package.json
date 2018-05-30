@@ -1,0 +1,30 @@
+{
+  "name": "coinmarketcap-cacher",
+  "version": "1.0.0",
+  "description": "Cache coinmarketcap data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MyEtherWallet/coinmarketcap-cacher.git"
+  },
+  "keywords": [
+    "cache",
+    "get",
+    "api"
+  ],
+  "author": "kvhnuke",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MyEtherWallet/coinmarketcap-cacher/issues"
+  },
+  "homepage": "https://github.com/MyEtherWallet/coinmarketcap-cacher#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "get-port": "^3.2.0",
+    "node-fetch": "^2.1.2"
+  }
+}
