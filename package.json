@@ -26,5 +26,8 @@
     "express": "^4.16.3",
     "get-port": "^3.2.0",
     "node-fetch": "^2.1.2"
+  },
+  "devDependencies": {
+    "cors": "^2.8.4"
   }
 }

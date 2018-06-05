@@ -1,7 +1,11 @@
 var express = require('express');
 const getPort = require('get-port');
 const fetch = require('node-fetch');
+const cors = require('cors');
 var app = express();
+
+app.use(cors())
+
 var cache = {};
 
 setInterval(() => {
