@@ -53,7 +53,7 @@ app.get('/meta', function(req, res) {
 })
 
 getPort({
-    port: 41543 // process.env.PORT || 8080
+    port: process.env.PORT || 8080
 }).then(port => {
     var server = app.listen(port, function() {
         var host = server.address().address
@@ -68,14 +68,12 @@ let processPairs = function(pairs) {
             let tCache = Object.assign({}, cache)
             tCache.data = {}
             pairs.forEach((_pair) => {
-                console.log(_pair) // todo remove dev item
                 if (typeof gPairs[_pair] !== 'undefined') {
                     tCache.data[_pair] = gPairs[_pair]
                 }
             })
             resolve(tCache)
         } catch (e) {
-            console.log(e) // todo remove dev item
             reject(e)
         }
     })
@@ -83,9 +81,7 @@ let processPairs = function(pairs) {
 
 let validatePairs = function(pairs) {
     return new Promise((resolve, reject) => {
-        console.log(gPairs) // todo remove dev item
         for (let i = 0; i < pairs.length; i++) {
-            console.log(gPairs[pairs[i]]) // todo remove dev item
             if (typeof gPairs[pairs[i]] === 'undefined') reject('invalid pairs')
         }
         resolve(pairs)
