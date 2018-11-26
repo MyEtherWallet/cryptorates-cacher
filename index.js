@@ -21,18 +21,21 @@ setInterval(() => {
 }, 5000);
 
 app.get("/convert/:id", async function(req, res) {
-  if (conversionCache.hasOwnProperty("lastCalled")) {
-    const lastFetch =
-      Math.round((new Date().getTime() - conversionCache.lastCalled) / 1000) /
-      60; // Get minutes
-    if (lastFetch < 20) {
-      res.json(conversionCache);
-      return;
+  try {
+    const id = req.params.id ? req.params.id : 1027;
+    if (conversionCache.hasOwnProperty("lastCalled")) {
+      const lastFetch = Math.round((new Date().getTime() - conversionCache.lastCalled) / 1000) / 60; // Get minutes
+      if (lastFetch < 20) {
+        res.json(conversionCache);
+        return;
+      } else {
+        await conversionResBuild(id);
+      }
     } else {
-      await conversionResBuild(req.params.id);
+      await conversionResBuild(id);
     }
-  } else {
-    await conversionResBuild(req.params.id);
+  } catch (e) {
+    res.send(JSON.stringify({ error: true, message: e }, null, 3));
   }
 
   res.json(conversionCache);
