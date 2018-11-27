@@ -21,12 +21,12 @@ setInterval(() => {
 }, 5000);
 
 app.get("/convert/:id", async function(req, res) {
+  const id = req.params.id ? req.params.id : 1027;
   try {
-    const id = req.params.id ? req.params.id : 1027;
-    if (conversionCache.hasOwnProperty("lastCalled")) {
-      const lastFetch = Math.round((new Date().getTime() - conversionCache.lastCalled) / 1000) / 60; // Get minutes
+    if (conversionCache[id] && conversionCache[id].hasOwnProperty("lastCalled")) {
+      const lastFetch = Math.round((new Date().getTime() - conversionCache[id].lastCalled) / 1000) / 60; // Get minutes
       if (lastFetch < 20) {
-        res.json(conversionCache);
+        res.json(conversionCache[id]);
         return;
       } else {
         await conversionResBuild(id);
@@ -35,10 +35,10 @@ app.get("/convert/:id", async function(req, res) {
       await conversionResBuild(id);
     }
   } catch (e) {
-    res.send(JSON.stringify({ error: true, message: e }, null, 3));
+    res.json({ error: true, message: e }, null, 3);
   }
 
-  res.json(conversionCache);
+  res.json(conversionCache[id]);
 });
 
 app.get("/ticker", async function(req, res) {
@@ -81,6 +81,7 @@ app.get("/ticker", async function(req, res) {
     );
   }
 });
+
 app.get("/meta", function(req, res) {
   res.setHeader("Content-Type", "application/json");
   res.send(JSON.stringify(cache.metadata, null, 3));
@@ -123,11 +124,12 @@ let validatePairs = function(pairs) {
 };
 
 let conversionResBuild = async function(id) {
+  conversionCache[id] = {};
   const supported = ["BTC", "REP", "CHF", "USD", "EUR", "GBP"];
   for (const curr of supported) {
     const price = await fetch(`${COIN_MARKET_URL}${id}/?convert=${curr}`);
     const parsedPrice = await price.json();
-    conversionCache[curr] = parsedPrice.data.quotes[curr].price;
+    conversionCache[id][curr] = parsedPrice.data.quotes[curr].price;
   }
-  conversionCache["lastCalled"] = new Date().getTime();
+  conversionCache[id]["lastCalled"] = new Date().getTime();
 };
