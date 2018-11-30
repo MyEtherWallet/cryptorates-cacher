@@ -34,7 +34,7 @@ setInterval(() => {
     }).catch(e => {
       console.log(e)
     });
-}, 5000);
+}, 900000);
 
 app.get("/convert/:symbol", async function(req, res) {
   const symbol = req.params.symbol ? req.params.symbol : 'ETH';
