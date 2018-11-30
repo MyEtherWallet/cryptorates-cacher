@@ -1,44 +1,60 @@
-var express = require("express");
+if(process.env.NODE_ENV !== "production") {
+  require('dotenv').config();
+}
+const express = require("express");
 const getPort = require("get-port");
 const fetch = require("node-fetch");
 const cors = require("cors");
-var app = express();
+const app = express();
 
 app.use(cors());
 
-var cache = {};
-var gPairs = {};
-var conversionCache = {};
-const COIN_MARKET_URL = "https://api.coinmarketcap.com/v2/ticker/";
+let cache = {};
+let gPairs = {};
+let conversionCache = {};
+const COIN_MARKET_URL = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest";
 setInterval(() => {
-  fetch(COIN_MARKET_URL)
-    .then(res => res.json())
+  fetch(COIN_MARKET_URL, {
+    headers: {
+      'Content-Type': 'application/json',
+      'method': 'GET',
+      'X-CMC_PRO_API_KEY': `${process.env.COIN_MARKET_KEY}`
+    }
+  })
+    .then(res => {
+      const response = res.json();
+      console.log(response)
+      return response;
+    })
     .then(json => {
       cache = json;
+      console.log(json);
       let prices = cache["data"];
       for (let price in prices) gPairs[prices[price].symbol] = prices[price];
+    }).catch(e => {
+      console.log(e)
     });
-}, 5000);
+}, 900000);
 
-app.get("/convert/:id", async function(req, res) {
-  const id = req.params.id ? req.params.id : 1027;
+app.get("/convert/:symbol", async function(req, res) {
+  const symbol = req.params.symbol ? req.params.symbol : 'ETH';
   try {
-    if (conversionCache[id] && conversionCache[id].hasOwnProperty("lastCalled")) {
-      const lastFetch = Math.round((new Date().getTime() - conversionCache[id].lastCalled) / 1000) / 60; // Get minutes
+    if (conversionCache[symbol] && conversionCache[symbol].hasOwnProperty("lastCalled")) {
+      const lastFetch = Math.round((new Date().getTime() - conversionCache[symbol].lastCalled) / 1000) / 60; // Get minutes
       if (lastFetch < 20) {
-        res.json(conversionCache[id]);
+        res.json(conversionCache[symbol]);
         return;
       } else {
-        await conversionResBuild(id);
+        await conversionResBuild(symbol);
       }
     } else {
-      await conversionResBuild(id);
+      await conversionResBuild(symbol);
     }
   } catch (e) {
     res.json({ error: true, message: e }, null, 3);
   }
 
-  res.json(conversionCache[id]);
+  res.json(conversionCache[symbol]);
 });
 
 app.get("/ticker", async function(req, res) {
@@ -90,9 +106,9 @@ app.get("/meta", function(req, res) {
 getPort({
   port: process.env.PORT || 8081
 }).then(port => {
-  var server = app.listen(port, function() {
-    var host = server.address().address;
-    var port = server.address().port;
+  const server = app.listen(port, function() {
+    const host = server.address().address;
+    const port = server.address().port;
     console.log("Server running and listening at http://%s:%s", host, port);
   });
 });
@@ -123,13 +139,19 @@ let validatePairs = function(pairs) {
   });
 };
 
-let conversionResBuild = async function(id) {
-  conversionCache[id] = {};
+let conversionResBuild = async function(symbol) {
+  conversionCache[symbol] = {};
   const supported = ["BTC", "REP", "CHF", "USD", "EUR", "GBP"];
   for (const curr of supported) {
-    const price = await fetch(`${COIN_MARKET_URL}${id}/?convert=${curr}`);
+    const price = await fetch(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${symbol}&convert=${curr}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'method': 'GET',
+        'X-CMC_PRO_API_KEY': process.env.COIN_MARKET_KEY
+      }
+    })
     const parsedPrice = await price.json();
-    conversionCache[id][curr] = parsedPrice.data.quotes[curr].price;
+    conversionCache[symbol][curr] = parsedPrice.data.quotes[curr].price;
   }
-  conversionCache[id]["lastCalled"] = new Date().getTime();
+  conversionCache[symbol]["lastCalled"] = new Date().getTime();
 };

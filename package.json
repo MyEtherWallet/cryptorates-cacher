@@ -23,9 +23,10 @@
   },
   "homepage": "https://github.com/MyEtherWallet/coinmarketcap-cacher#readme",
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^6.1.0",
     "express": "^4.16.3",
     "get-port": "^3.2.0",
-    "node-fetch": "^2.1.2",
-    "cors": "^2.8.5"
+    "node-fetch": "^2.1.2"
   }
 }
