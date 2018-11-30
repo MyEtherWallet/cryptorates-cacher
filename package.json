@@ -5,8 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "jest tests",
-    "start": "babel src --out-dir dist"
+    "start": "babel src --out-dir dist",
+    "create": "npm run start && claudia create --profile claudia --region us-east-1 --api-module dist/index",
+    "update": "npm run start && claudia update --profile claudia"
   },
+  "files": [
+    "dist/**/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MyEtherWallet/coinmarketcap-cacher.git"
@@ -26,10 +31,7 @@
     "aws-sdk": "^2.367.0",
     "bignumber.js": "^8.0.1",
     "claudia-api-builder": "^4.1.1",
-    "cors": "^2.8.5",
     "dotenv": "^6.1.0",
-    "express": "^4.16.3",
-    "get-port": "^3.2.0",
     "node-fetch": "^2.1.2"
   },
   "devDependencies": {

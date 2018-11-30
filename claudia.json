@@ -1,0 +1,11 @@
+{
+  "lambda": {
+    "role": "coinmarketcap-cacher-executor",
+    "name": "coinmarketcap-cacher",
+    "region": "us-east-1"
+  },
+  "api": {
+    "id": "0spkoad0rl",
+    "module": "dist/index"
+  }
+}
