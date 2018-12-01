@@ -13,7 +13,7 @@ let cache = {};
 let gPairs = {};
 let conversionCache = {};
 const COIN_MARKET_URL = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest";
-setInterval(() => {
+const fetcher = () => {
   fetch(COIN_MARKET_URL, {
     headers: {
       'Content-Type': 'application/json',
@@ -23,18 +23,21 @@ setInterval(() => {
   })
     .then(res => {
       const response = res.json();
-      console.log(response)
       return response;
     })
     .then(json => {
       cache = json;
-      console.log(json);
       let prices = cache["data"];
       for (let price in prices) gPairs[prices[price].symbol] = prices[price];
     }).catch(e => {
       console.log(e)
     });
-}, 900000);
+
+  console.log(cache);
+}
+
+fetcher();
+setInterval(fetcher, 900000);
 
 app.get("/convert/:symbol", async function(req, res) {
   const symbol = req.params.symbol ? req.params.symbol : 'ETH';
