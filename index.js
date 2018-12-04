@@ -26,7 +26,22 @@ const fetcher = () => {
       return response;
     })
     .then(json => {
-      cache = json;
+      const data = {};
+      const metadata = {
+        timestamp: new Date(json.status.timestamp).getTime(),
+        num_cryptocurrencies: json.data.length,
+        error: json.status.error_message
+      }
+      json.data.forEach(item => {
+        data[item.id] = item;
+        data[item.id]['quotes'] = item.quote;
+        delete data[item.id]['quote'];
+      });
+
+      cache = {
+        data: data,
+        metadata: metadata
+      };
       let prices = cache["data"];
       for (let price in prices) gPairs[prices[price].symbol] = prices[price];
     }).catch(e => {
@@ -100,6 +115,7 @@ app.get("/ticker", async function(req, res) {
 });
 
 app.get("/meta", function(req, res) {
+  
   res.setHeader("Content-Type", "application/json");
   res.send(JSON.stringify(cache.metadata, null, 3));
 });
