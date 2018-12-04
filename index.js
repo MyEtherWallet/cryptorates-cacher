@@ -32,8 +32,6 @@ const fetcher = () => {
     }).catch(e => {
       console.log(e)
     });
-
-  console.log(cache);
 }
 
 fetcher();
@@ -61,7 +59,7 @@ app.get("/convert/:symbol", async function(req, res) {
 });
 
 app.get("/ticker", async function(req, res) {
-  res.setHeader("Content-Type", "application/json");
+  // res.setHeader("Content-Type", "application/json");
   try {
     if (!req.query.filter) {
       res.send(JSON.stringify(cache, null, 3));
@@ -146,15 +144,20 @@ let conversionResBuild = async function(symbol) {
   conversionCache[symbol] = {};
   const supported = ["BTC", "REP", "CHF", "USD", "EUR", "GBP"];
   for (const curr of supported) {
-    const price = await fetch(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${symbol}&convert=${curr}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'method': 'GET',
-        'X-CMC_PRO_API_KEY': process.env.COIN_MARKET_KEY
-      }
-    })
-    const parsedPrice = await price.json();
-    conversionCache[symbol][curr] = parsedPrice.data.quotes[curr].price;
+    try {
+      const price = await fetch(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${symbol}&convert=${curr}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'method': 'GET',
+          'X-CMC_PRO_API_KEY': `${process.env.COIN_MARKET_KEY}`
+        }
+      })
+      const parsedPrice = await price.json();
+      conversionCache[symbol][curr] = parsedPrice.data[symbol].quote[curr].price;
+    } catch (e) {
+      console.log(e);
+    }
   }
   conversionCache[symbol]["lastCalled"] = new Date().getTime();
+  return
 };
