@@ -8,7 +8,7 @@ test("Get Meta", async done => {
     .then(response => {
       const result = response.response;
       expect(result.error).toBe(null);
-      expect(result.num_cryptocurrencies).toBeGreaterThan(2000);
+      expect(result.num_cryptocurrencies).toBeGreaterThan(80);
       timestamp = result.cacherTimestamp;
       done();
     })
