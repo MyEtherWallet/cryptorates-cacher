@@ -28,19 +28,19 @@
   },
   "homepage": "https://github.com/MyEtherWallet/coinmarketcap-cacher#readme",
   "dependencies": {
-    "aws-sdk": "^2.367.0",
+    "aws-sdk": "^2.383.0",
     "bignumber.js": "^8.0.1",
     "claudia-api-builder": "^4.1.1",
-    "dotenv": "^6.1.0",
-    "node-fetch": "^2.1.2"
+    "dotenv": "^6.2.0",
+    "node-fetch": "^2.3.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.1.5",
-    "@babel/core": "^7.1.6",
-    "@babel/preset-env": "^7.1.6",
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
-    "claudia": "^5.2.0",
+    "claudia": "^5.3.0",
     "jest": "^23.6.0"
   }
 }

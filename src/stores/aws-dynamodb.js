@@ -26,13 +26,16 @@ class DynamoStore {
   set(store) {
     const _store = {
       timestamp: new Date().getTime(),
-      data: store
+      data: JSON.stringify(store)
     };
     return new Promise((resolve, reject) => {
       writeParams.Item.value = _store;
       dbClient.put(writeParams, err => {
         if (err) reject(err);
-        this.store = _store;
+        this.store = {
+          timestamp: _store.timestamp,
+          data: store
+        };
         resolve();
       });
     });
@@ -47,7 +50,11 @@ class DynamoStore {
       return new Promise((resolve, reject) => {
         dbClient.get(readParams, (err, data) => {
           if (err) reject(err);
-          else if (Object.keys(data).length !== 0) this.store = data.Item.value;
+          else if (Object.keys(data).length !== 0)
+            this.store = {
+              timestamp: data.Item.value.timestamp,
+              data: JSON.parse(data.Item.value.data)
+            };
           if (
             this.store.timestamp &&
             new Date().getTime() < this.store.timestamp + this.updateInterval
