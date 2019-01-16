@@ -1,36 +1,37 @@
 import fetch from "node-fetch";
 import configs from "../configs";
-const oldify = list => {
-  const oldObj = {
-    data: {},
+const formatter = list => {
+  const newList = list.map(item => {
+    delete item["image"];
+    delete item["roi"];
+    item.symbol = item.symbol.toUpperCase();
+    return item;
+  });
+  const newObj = {};
+  newList.forEach(item => {
+    newObj[item.symbol] = item;
+  });
+  return {
+    data: newObj,
     metadata: {
-      timestamp: new Date(list.status.timestamp).getTime(),
-      num_cryptocurrencies: list.data.length,
+      timestamp: new Date(newList[0].last_updated).getTime(),
+      num_cryptocurrencies: newList.length,
       error: null,
       cacherTimestamp: new Date().getTime()
     }
   };
-  for (let i in list.data) {
-    const coin = list.data[i];
-    coin.quotes = coin.quote;
-    oldObj.data[coin.id] = coin;
-  }
-  return oldObj;
 };
 export default () => {
   return new Promise((resolve, reject) => {
-    fetch(configs.COIN_MARKET_URL, {
+    fetch(configs.COIN_GECKO_URL, {
       headers: {
         "Content-Type": "application/json",
-        method: "GET",
-        "X-CMC_PRO_API_KEY": `${configs.COIN_MARKET_KEY}`
+        method: "GET"
       }
     })
       .then(res => res.json())
       .then(async json => {
-        if (json.status.error_code !== 0)
-          return reject(new Error(json.status.error_message));
-        json = oldify(json);
+        json = formatter(json);
         resolve(json);
       })
       .catch(reject);

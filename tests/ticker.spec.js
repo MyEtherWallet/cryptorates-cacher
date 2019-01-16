@@ -7,7 +7,7 @@ test("Get Ticker data", async done => {
     .then(response => {
       const result = response.response;
       expect(result.data).not.toBe(null);
-      expect(result.data["1027"].name).toBe("Ethereum");
+      expect(result.data["ETH"].name).toBe("Ethereum");
       done();
     })
     .catch(console.log);

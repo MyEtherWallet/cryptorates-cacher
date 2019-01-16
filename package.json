@@ -1,7 +1,7 @@
 {
-  "name": "coinmarketcap-cacher",
-  "version": "1.0.0",
-  "description": "Cache coinmarketcap data",
+  "name": "coingecko-cacher",
+  "version": "2.0.0",
+  "description": "Cache coingecko data",
   "main": "index.js",
   "scripts": {
     "test": "jest tests",
@@ -14,7 +14,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MyEtherWallet/coinmarketcap-cacher.git"
+    "url": "git+https://github.com/MyEtherWallet/coingecko-cacher.git"
   },
   "keywords": [
     "cache",
@@ -24,9 +24,9 @@
   "author": "kvhnuke",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/MyEtherWallet/coinmarketcap-cacher/issues"
+    "url": "https://github.com/MyEtherWallet/coingecko-cacher/issues"
   },
-  "homepage": "https://github.com/MyEtherWallet/coinmarketcap-cacher#readme",
+  "homepage": "https://github.com/MyEtherWallet/coingecko-cacher#readme",
   "dependencies": {
     "aws-sdk": "^2.383.0",
     "bignumber.js": "^8.0.1",

@@ -1,9 +1,6 @@
 import BN from "bignumber.js";
 const getGPairs = cache => {
-  const gPairs = {};
-  let prices = cache["data"];
-  for (let price in prices) gPairs[prices[price].symbol] = prices[price];
-  return gPairs;
+  return cache["data"];
 };
 const validatePairs = (pairs, cache) => {
   const gPairs = getGPairs(cache);
@@ -25,12 +22,12 @@ const processPairs = function(pairs, cache) {
 };
 const getRates = (pair, cache) => {
   const gPairs = getGPairs(cache);
-  const usdVal = gPairs[pair].quotes.USD.price;
+  const usdVal = gPairs[pair].current_price;
   const result = {};
   for (let _pair in gPairs) {
     if (_pair === pair) continue;
     result[_pair] = new BN(usdVal)
-      .div(new BN(gPairs[_pair].quotes.USD.price))
+      .div(new BN(gPairs[_pair].current_price))
       .toNumber();
   }
   return result;
