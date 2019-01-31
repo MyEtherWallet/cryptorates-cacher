@@ -17,6 +17,7 @@ const formatter = list => {
       "id",
       "symbol",
       "name",
+      "market_cap_rank",
       "circulating_supply",
       "total_supply",
       "last_updated",
