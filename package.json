@@ -1,7 +1,7 @@
 {
-  "name": "coingecko-cacher",
+  "name": "cryptorates-cacher",
   "version": "2.0.0",
-  "description": "Cache coingecko data",
+  "description": "Cache crypto rates, source: coingecko.com",
   "main": "index.js",
   "scripts": {
     "test": "jest tests",
@@ -14,7 +14,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MyEtherWallet/coingecko-cacher.git"
+    "url": "git+https://github.com/MyEtherWallet/cryptorates-cacher.git"
   },
   "keywords": [
     "cache",
@@ -24,9 +24,9 @@
   "author": "kvhnuke",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/MyEtherWallet/coingecko-cacher/issues"
+    "url": "https://github.com/MyEtherWallet/cryptorates-cacher/issues"
   },
-  "homepage": "https://github.com/MyEtherWallet/coingecko-cacher#readme",
+  "homepage": "https://github.com/MyEtherWallet/cryptorates-cacher#readme",
   "dependencies": {
     "aws-sdk": "^2.383.0",
     "bignumber.js": "^8.0.1",
