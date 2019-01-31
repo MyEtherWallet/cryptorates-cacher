@@ -1,6 +1,6 @@
-# CoinGecko-cacher
+# CryptoRates-cacher
 
-Cache CoinGecko data
+source: CoinGecko data
 
 Query Parameters:
 
