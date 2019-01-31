@@ -13,11 +13,11 @@ test("Get Ticker data", async done => {
     .catch(console.log);
 });
 test("Get Ticker data, filter", async done => {
-  expect.assertions(5);
   ticker({ queryString: { filter: "BTC,ETH,REP" } }, memstore)
     .then(response => {
       const result = response.response;
       expect(result.data).not.toBe(undefined);
+      expect(result.data.ETH.quotes.USD.price).not.toBe(undefined);
       expect(result.data.ETH.name).toBe("Ethereum");
       expect(result.data.BTC.name).toBe("Bitcoin");
       expect(result.data.REP.name).toBe("Augur");

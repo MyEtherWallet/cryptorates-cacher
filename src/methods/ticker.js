@@ -5,6 +5,7 @@ export default (request, store) => {
     store
       .get()
       .then(cache => {
+        console.log(request.queryString);
         if (!request.queryString.filter) {
           resolve(success(cache));
         } else {

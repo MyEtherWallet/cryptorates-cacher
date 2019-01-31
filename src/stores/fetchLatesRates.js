@@ -2,9 +2,25 @@ import fetch from "node-fetch";
 import configs from "../configs";
 const formatter = list => {
   const newList = list.map(item => {
-    delete item["image"];
-    delete item["roi"];
     item.symbol = item.symbol.toUpperCase();
+    item.quotes = {
+      USD: {
+        price: item.current_price,
+        market_cap: item.market_cap,
+        last_updated: item.last_updated,
+        total_volume: item.total_volume
+      }
+    };
+    const keepList = [
+      "id",
+      "symbol",
+      "name",
+      "circulating_supply",
+      "total_supply",
+      "last_updated",
+      "quotes"
+    ];
+    for (const key in item) if (keepList.indexOf(key) < 0) delete item[key];
     return item;
   });
   const newObj = {};

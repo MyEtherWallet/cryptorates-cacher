@@ -22,12 +22,12 @@ const processPairs = function(pairs, cache) {
 };
 const getRates = (pair, cache) => {
   const gPairs = getGPairs(cache);
-  const usdVal = gPairs[pair].current_price;
+  const usdVal = gPairs[pair].quotes.USD.price;
   const result = {};
   for (let _pair in gPairs) {
     if (_pair === pair) continue;
     result[_pair] = new BN(usdVal)
-      .div(new BN(gPairs[_pair].current_price))
+      .div(new BN(gPairs[_pair].quotes.USD.price))
       .toNumber();
   }
   return result;
