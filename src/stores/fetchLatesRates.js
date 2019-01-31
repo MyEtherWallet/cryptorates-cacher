@@ -9,7 +9,7 @@ const formatter = list => {
         market_cap: item.market_cap,
         last_updated: item.last_updated,
         total_volume: item.total_volume,
-        price_change_percentage_24h: item.price_change_percentage_24h,
+        percent_change_24h: item.price_change_percentage_24h,
         price_change_24h: item.price_change_24h
       }
     };
