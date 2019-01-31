@@ -13,6 +13,7 @@ test("Get Ticker data", async done => {
     .catch(console.log);
 });
 test("Get Ticker data, filter", async done => {
+  expect.assertions(6);
   ticker({ queryString: { filter: "BTC,ETH,REP" } }, memstore)
     .then(response => {
       const result = response.response;
